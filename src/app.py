@@ -9,33 +9,58 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. CUSTOM CSS (To make it look soft and charming)
+# 2. PREMIUM CSS UPGRADE
 st.markdown("""
 <style>
-    /* Soften the background slightly */
+    /* 1. Gorgeous subtle background gradient for the main app */
     .stApp {
-        background-color: #FAFAFA;
+        background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
     }
     
-    /* Center and style the main title */
+    /* 2. Transparent top header so the gradient shows through */
+    header {
+        background-color: transparent !important;
+    }
+    
+    /* 3. Style the main title with a beautiful painted text gradient */
     .main-title {
         font-family: 'Georgia', serif;
-        font-size: 2.8rem;
-        color: #2E4053;
+        font-size: 3.2rem;
+        background: -webkit-linear-gradient(45deg, #D4145A, #FBB03B);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         text-align: center;
-        margin-bottom: 0px;
+        font-weight: 800;
+        margin-bottom: -10px;
+        padding-top: 10px;
     }
     
-    /* Style the subtitle */
+    /* 4. Elegant subtitle with letter spacing */
     .sub-title {
         font-size: 1.1rem;
-        color: #7F8C8D;
+        color: #5D6D7E;
         text-align: center;
-        margin-top: 5px;
-        margin-bottom: 30px;
+        letter-spacing: 1.5px;
+        margin-top: 10px;
+        margin-bottom: 40px;
+        font-style: italic;
     }
     
-    /* Hide the default Streamlit top menu and footer for a cleaner look */
+    /* 5. Style the sidebar with a soft warm color and subtle border */
+    [data-testid="stSidebar"] {
+        background-color: #FFF9F5;
+        border-right: 1px solid #FFE4D6;
+    }
+    
+    /* 6. Style the chat input box to look more like a custom pill/bubble */
+    [data-testid="stChatInput"] {
+        border: 2px solid #FFD1BA !important;
+        border-radius: 25px !important;
+        background-color: #FFFFFF !important;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.05);
+    }
+    
+    /* Hide default Streamlit footers */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
 </style>
