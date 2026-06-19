@@ -81,7 +81,7 @@ def chunk_extracted_pages(pages: list[dict], chunk_size: int = 1000, chunk_overl
 
     return chunks
 
-def save_to_vector_db(chunks: list[dict], db_path: str = "../db"):
+def save_to_vector_db(chunks: list[dict], db_path: str = "db"):
     """
     Embeds text chunks and saves them into a persistent disk-based ChromaDB in batches to respect API limits.
     """

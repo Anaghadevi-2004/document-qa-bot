@@ -22,7 +22,7 @@ class CustomGeminiEmbeddingFunction(EmbeddingFunction):
         )
         return result['embedding']
 
-def query_rag_pipeline(user_query: str, db_path: str = "../db", k: int = 3) -> dict:
+def query_rag_pipeline(user_query: str, db_path: str = "db", k: int = 3) -> dict:
     """
     Searches the database, builds a grounded prompt, and queries the LLM.
     """
