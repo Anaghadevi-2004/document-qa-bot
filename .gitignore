@@ -4,9 +4,6 @@ venv/
 # Ignore your private API keys!
 .env
 
-# Ignore the local Chroma database
-db/
-
 # Ignore Python cache files
 __pycache__/
 *.pyc
