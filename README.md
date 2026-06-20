@@ -8,6 +8,8 @@
 
 By leveraging **ChromaDB** for localized vector storage and **Google Gemini's** embedding and generative models, the application provides strict, grounded answers based _only_ on the provided context, virtually eliminating LLM hallucinations.
 
+---
+
 ## ✨ Key Features
 
 - **Strict Context Grounding:** The LLM is system-prompted to answer only from the retrieved chunks, ensuring high accuracy and reliability.
@@ -26,6 +28,8 @@ By leveraging **ChromaDB** for localized vector storage and **Google Gemini's** 
 - **Embeddings:** Google `gemini-embedding-001`
 - **LLM:** Google `gemini-2.5-flash`
 - **Frontend UI:** `streamlit`
+
+---
 
 ## 🚀 Setup & Installation
 
@@ -55,6 +59,8 @@ pip install -r requirements.txt
 Create a .env file in the root directory and add your Google Gemini API key:
 GEMINI_API_KEY="MY_ACTUAL_KEY"
 
+---
+
 ## 🧠 How to Run the Project
 
 Step 1: Ingest Documents
@@ -67,6 +73,8 @@ You can interact with the bot in two ways:
 Terminal UI: Run python src/main.py for a command-line chat loop.
 
 Web UI (Streamlit): Run streamlit run src/app.py for a fully interactive web interface.
+
+---
 
 ## 📂 Architecture & Project Structure
 
@@ -81,6 +89,8 @@ document-qa-bot/
 ├── ingest.py # Document parsing, chunking, and db population
 └── query.py # RAG retrieval logic and LLM prompting
 
+---
+
 ## 📊 Analysis
 
 The RAG Pipeline
@@ -92,8 +102,12 @@ Embedding & Storage: Chunks are vectorized using Google's gemini-embedding-001 m
 
 Retrieval & Generation: When a user asks a question, it is embedded and matched against the vector database using cosine similarity. The top 3 chunks are injected into a strict system prompt, forcing the gemini-2.5-flash model to answer only using the provided context and to cite its sources.
 
+---
+
 ### Challenges Overcome
 
 1. **API Deprecation & Compatibility:** During development, I encountered API deprecation issues with older Google generative AI models (`text-embedding-004` and `gemini-1.5-flash`). To solve this, I bypassed ChromaDB's default wrapper and built a custom embedding function class to interface directly with the newest, live Google GenAI endpoints (`gemini-embedding-001` and `gemini-2.5-flash`), ensuring the pipeline remained up-to-date.
 
 2. **API Rate Limiting:** When scaling up the ingestion pipeline to handle multiple PDF documents simultaneously, I hit a `429 ResourceExhausted` error due to Google Gemini's free-tier quota limits (100 requests/minute). To solve this, I engineered a rate-limiting fallback in the `save_to_vector_db` function. By grouping the text chunks into smaller batches and introducing a deliberate `time.sleep()` delay between uploads, the script now safely processes large document libraries without crashing or dropping data.
+
+---
