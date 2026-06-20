@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 from query import query_rag_pipeline
 
 st.set_page_config(
@@ -92,7 +93,20 @@ with st.sidebar:
     st.markdown("Your private, AI-powered knowledge base.")
     st.markdown("---")
     st.markdown("### 📚 Indexed Files:")
-    st.markdown("• Resume details\n• SSC CGL Solved Papers\n• Exam Admit Cards\n• Mandala Art guides")
+    
+    # Dynamically read files from the data folder!
+    
+    try:
+        data_files = os.listdir("data")
+        valid_files = [f for f in data_files if f.endswith('.pdf') or f.endswith('.docx')]
+        if valid_files:
+            for file in valid_files:
+                st.markdown(f"• {file}")
+        else:
+            st.markdown("• No documents found.")
+    except Exception:
+        st.markdown("• No documents found.")
+
     st.markdown("---")
     st.markdown("### 💡 Example Queries:")
     st.info('"What are the hobbies of this candidate?"')
