@@ -1,8 +1,22 @@
-# 🤖 Document Q&A Bot (RAG Pipeline)
+# 🫧 Nexus: Intelligent Document Retrieval (RAG Pipeline)
+
+**Live Application:** [https://document-app-bot-hpkkude5khn42xheaggu4c.streamlit.app/]
 
 ## 📌 Project Overview
 
-This project is a full-stack Retrieval-Augmented Generation (RAG) system. It allows users to upload PDF documents (like resumes or reports...) and ask natural language questions about them. The bot retrieves the most relevant context from the documents and uses an LLM to generate a grounded, accurate answer with inline citations.
+**Nexus** is a full-stack, local Retrieval-Augmented Generation (RAG) pipeline designed to bridge the gap between large language models and private data. It allows users to upload local PDF documents (such as resumes, exam prep materials, and reports) and interact with them through a natural language interface.
+
+By leveraging **ChromaDB** for localized vector storage and **Google Gemini's** embedding and generative models, the application provides strict, grounded answers based _only_ on the provided context, virtually eliminating LLM hallucinations.
+
+## ✨ Key Features
+
+- **Strict Context Grounding:** The LLM is system-prompted to answer only from the retrieved chunks, ensuring high accuracy and reliability.
+- **Automated Source Citations:** Every generated answer includes transparent source citations (Filename and Page Number) to verify the data.
+- **Custom Ingestion Engine:** Engineered a specialized document chunking and batch-processing pipeline that safely handles API rate limits (e.g., HTTP 429 errors) without crashing during large document uploads.
+- **Local Vector Persistence:** Implemented a persistent ChromaDB structure, drastically reducing API calls and latency by indexing documents only once.
+- **Premium UI/UX:** Features a custom "Glassmorphism" frontend built with Streamlit and advanced CSS injections, offering an aesthetic, intuitive user experience.
+
+---
 
 ## ⚙️ Tech Stack
 
@@ -17,17 +31,17 @@ This project is a full-stack Retrieval-Augmented Generation (RAG) system. It all
 
 **1. Clone the repository**
 
-git clone <your-github-repo-link-here>
+git clone [https://github.com/Anaghadevi-2004/document-qa-bot.git](https://github.com/Anaghadevi-2004/document-qa-bot.git)
 cd document-qa-bot
 
 **2. Create and activate a virtual environment**
 
-# Windows
+**Windows**
 
 python -m venv venv
 venv\Scripts\activate
 
-# macOS/Linux
+**macOS/Linux**
 
 python -m venv venv
 source venv/bin/activate
@@ -39,7 +53,7 @@ pip install -r requirements.txt
 **4. Set up environment variables**
 
 Create a .env file in the root directory and add your Google Gemini API key:
-GEMINI_API_KEY="ACTUAL_KEY"
+GEMINI_API_KEY="MY_ACTUAL_KEY"
 
 ## 🧠 How to Run the Project
 
@@ -54,7 +68,20 @@ Terminal UI: Run python src/main.py for a command-line chat loop.
 
 Web UI (Streamlit): Run streamlit run src/app.py for a fully interactive web interface.
 
-## 📊 Analysis & Architecture
+## 📂 Architecture & Project Structure
+
+document-qa-bot/
+├── .env # Environment variables (Ignored by Git)
+├── README.md # Project documentation
+├── requirements.txt # Dependency list
+├── data/ # Source documents (PDFs)
+├── db/ # Persistent ChromaDB vector storage
+└── src/  
+ ├── app.py # Streamlit frontend & UI logic
+├── ingest.py # Document parsing, chunking, and db population
+└── query.py # RAG retrieval logic and LLM prompting
+
+## 📊 Analysis
 
 The RAG Pipeline
 Extraction: The pypdf library reads raw PDFs page-by-page, stripping whitespace while preserving crucial metadata (filename and page number).
