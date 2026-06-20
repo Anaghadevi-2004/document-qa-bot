@@ -78,16 +78,18 @@ Web UI (Streamlit): Run streamlit run src/app.py for a fully interactive web int
 
 ## 📂 Architecture & Project Structure
 
+```text
 document-qa-bot/
-├── .env # Environment variables (Ignored by Git)
-├── README.md # Project documentation
-├── requirements.txt # Dependency list
-├── data/ # Source documents (PDFs)
-├── db/ # Persistent ChromaDB vector storage
-└── src/  
- ├── app.py # Streamlit frontend & UI logic
-├── ingest.py # Document parsing, chunking, and db population
-└── query.py # RAG retrieval logic and LLM prompting
+├── .env                # Environment variables (Ignored by Git)
+├── README.md           # Project documentation
+├── requirements.txt    # Dependency list
+├── data/               # Source documents (PDFs)
+├── db/                 # Persistent ChromaDB vector storage
+└── src/
+    ├── app.py          # Streamlit frontend & UI logic
+    ├── ingest.py       # Document parsing, chunking, and db population
+    └── query.py        # RAG retrieval logic and LLM prompting
+```
 
 ---
 

@@ -1,7 +1,6 @@
 import streamlit as st
 from query import query_rag_pipeline
 
-# 1. PAGE CONFIG
 st.set_page_config(
     page_title="Knowledge Explorer",
     page_icon="🫧",
@@ -9,7 +8,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. ULTRA-AESTHETIC CSS (Glassmorphism + Aurora Background)
 st.markdown("""
 <style>
     /* 1. Aurora Glowing Background */
@@ -89,7 +87,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 3. MINIMALIST SIDEBAR
 with st.sidebar:
     st.title("☁️ Explorer")
     st.markdown("Your private, AI-powered knowledge base.")
@@ -103,46 +100,35 @@ with st.sidebar:
     st.markdown("---")
     st.caption("Powered by Streamlit & Gemini 🫧")
 
-# 4. MAIN HEADER
 st.markdown('<p class="main-title">Nexus</p>', unsafe_allow_html=True)
 st.markdown('<p class="sub-title">Intelligent Document Retrieval</p>', unsafe_allow_html=True)
 
-# 5. INITIALIZE CHAT HISTORY
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# 6. DISPLAY PREVIOUS MESSAGES
 for message in st.session_state.messages:
-    # Ethereal avatars
     avatar = "👤" if message["role"] == "user" else "✨"
     with st.chat_message(message["role"], avatar=avatar):
         st.markdown(message["content"])
 
-# 7. HANDLE USER INPUT & CALL DATABASE
 if prompt := st.chat_input("Type your question here..."):
     
-    # Show user message
     with st.chat_message("user", avatar="👤"):
         st.markdown(prompt)
     st.session_state.messages.append({"role": "user", "content": prompt})
 
-    # Show AI response
     with st.chat_message("assistant", avatar="✨"):
-        # Elegant spinner
         with st.spinner("Synthesizing knowledge... 🫧"):
             try:
-                # Call your exact working pipeline
                 result = query_rag_pipeline(prompt)
                 
                 answer = result["answer"]
                 unique_citations = set(result["citations"])
                 
-                # Format the text with citations
                 full_response = f"{answer}\n\n**Sources:**\n"
                 for citation in unique_citations:
                     full_response += f"- *{citation}*\n"
                 
-                # Print to screen and save to history
                 st.markdown(full_response)
                 st.session_state.messages.append({"role": "assistant", "content": full_response})
                 

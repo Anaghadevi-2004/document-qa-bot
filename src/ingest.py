@@ -5,18 +5,16 @@ import chromadb
 from chromadb.api.types import Documents, EmbeddingFunction, Embeddings
 import google.generativeai as genai
 from dotenv import load_dotenv
-from pypdf import PdfReader # <-- This was the missing piece!
+from pypdf import PdfReader 
 
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 
 class CustomGeminiEmbeddingFunction(EmbeddingFunction):
     def __init__(self, api_key: str):
-        # Configure the Google AI library directly
         genai.configure(api_key=api_key)
         
     def __call__(self, input: Documents) -> Embeddings:
-        # Send the text chunks to Gemini to get the vector embeddings
         result = genai.embed_content(
             model="models/gemini-embedding-001",
             content=input,
@@ -64,7 +62,6 @@ def chunk_extracted_pages(pages: list[dict], chunk_size: int = 1000, chunk_overl
         text_length = len(text)
 
         while start < text_length:
-            # Determine end point
             end = min(start + chunk_size, text_length)
             chunk_text = text[start:end]
 
@@ -109,7 +106,6 @@ def save_to_vector_db(chunks: list[dict], db_path: str = "db"):
             metadatas=metadatas
         )
         
-        # Calculate total batches just so you can see the progress
         total_batches = (len(chunks) + batch_size - 1) // batch_size
         print(f"Indexed batch {i // batch_size + 1} of {total_batches}...")
         
@@ -118,23 +114,19 @@ def save_to_vector_db(chunks: list[dict], db_path: str = "db"):
     print(f"\nSuccessfully indexed {len(chunks)} chunks in the vector database.")
 
 if __name__ == "__main__":
-    # We changed this path to look inside the current project folder!
     data_folder = "data/" 
     all_chunks = []
     
-    # 1. Find all PDF files in the data folder
     pdf_files = glob.glob(os.path.join(data_folder, "*.pdf"))
     
     if not pdf_files:
         print("No PDF files found in the data directory!")
     else:
-        # 2. Loop through every single PDF and extract/chunk it
         for file_path in pdf_files:
             print(f"Processing: {os.path.basename(file_path)}...")
             extracted_pages = extract_pdf_pages(file_path)
             chunks = chunk_extracted_pages(extracted_pages)
             all_chunks.extend(chunks) 
-            
-        # 3. Save ALL chunks from ALL documents into the database at once
+
         print(f"\nSaving a total of {len(all_chunks)} chunks to the database...")
         save_to_vector_db(all_chunks)
