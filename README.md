@@ -80,15 +80,18 @@ Web UI (Streamlit): Run streamlit run src/app.py for a fully interactive web int
 
 ```text
 document-qa-bot/
-├── .env                # Environment variables (Ignored by Git)
-├── README.md           # Project documentation
-├── requirements.txt    # Dependency list
-├── data/               # Source documents (PDFs)
-├── db/                 # Persistent ChromaDB vector storage
+├── .env                # Environment variables (e.g., GEMINI_API_KEY - Ignored by Git)
+├── .gitignore          # Specifies intentionally untracked files to ignore
+├── README.md           # Project documentation and setup instructions
+├── requirements.txt    # Python dependencies list
+├── data/               # Source directory for user-uploaded PDF documents
+├── db/                 # Persistent ChromaDB vector storage directory
 └── src/
-    ├── app.py          # Streamlit frontend & UI logic
-    ├── ingest.py       # Document parsing, chunking, and db population
-    └── query.py        # RAG retrieval logic and LLM prompting
+    ├── app.py          # Streamlit frontend, UI logic, and custom CSS
+    ├── config.py       # Centralized configuration, constants, and environment variables
+    ├── ingest.py       # Document parsing, text chunking, and database population
+    ├── main.py         # Terminal-based chat loop interface (CLI alternative)
+    └── query.py        # RAG retrieval logic, embedding, and LLM prompting
 ```
 
 ---
