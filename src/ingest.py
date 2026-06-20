@@ -1,6 +1,7 @@
 import os
 import glob
 import time
+import docx
 import chromadb
 from chromadb.api.types import Documents, EmbeddingFunction, Embeddings
 import google.generativeai as genai
@@ -44,6 +45,27 @@ def extract_pdf_pages(file_path: str) -> list[dict]:
                 })
     except Exception as e:
         print(f"Error reading PDF {file_name}: {e}")
+
+    return extracted_data
+def extract_docx_pages(file_path: str) -> list[dict]:
+    """Extracts text from a DOCX file."""
+    extracted_data = []
+    file_name = os.path.basename(file_path)
+    
+    try:
+        doc = docx.Document(file_path)
+        full_text = " ".join([para.text for para in doc.paragraphs if para.text.strip()])
+        
+        if full_text:
+            extracted_data.append({
+                "text": full_text,
+                "metadata": {
+                    "source": file_name,
+                    "page": 1 
+                }
+            })
+    except Exception as e:
+        print(f"Error reading DOCX {file_name}: {e}")
 
     return extracted_data
 
@@ -117,16 +139,28 @@ if __name__ == "__main__":
     data_folder = "data/" 
     all_chunks = []
     
-    pdf_files = glob.glob(os.path.join(data_folder, "*.pdf"))
-    
-    if not pdf_files:
-        print("No PDF files found in the data directory!")
+    # Check if the folder exists
+    if not os.path.exists(data_folder):
+        print(f"Directory {data_folder} not found!")
     else:
-        for file_path in pdf_files:
-            print(f"Processing: {os.path.basename(file_path)}...")
-            extracted_pages = extract_pdf_pages(file_path)
-            chunks = chunk_extracted_pages(extracted_pages)
-            all_chunks.extend(chunks) 
+        # Loop through every file in the folder
+        for filename in os.listdir(data_folder):
+            file_path = os.path.join(data_folder, filename)
+            
+            if filename.endswith(".pdf"):
+                print(f"Processing PDF: {filename}...")
+                extracted_pages = extract_pdf_pages(file_path)
+                chunks = chunk_extracted_pages(extracted_pages)
+                all_chunks.extend(chunks) 
+                
+            elif filename.endswith(".docx"):
+                print(f"Processing DOCX: {filename}...")
+                extracted_pages = extract_docx_pages(file_path) # Uses your new function!
+                chunks = chunk_extracted_pages(extracted_pages)
+                all_chunks.extend(chunks)
 
-        print(f"\nSaving a total of {len(all_chunks)} chunks to the database...")
-        save_to_vector_db(all_chunks)
+        if not all_chunks:
+            print("No PDF or DOCX files found in the data directory!")
+        else:
+            print(f"\nSaving a total of {len(all_chunks)} chunks to the database...")
+            save_to_vector_db(all_chunks)
